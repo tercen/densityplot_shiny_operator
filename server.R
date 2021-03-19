@@ -3,6 +3,7 @@ library(tercen)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(RColorBrewer)
 
 ############################################
 #### This part should not be modified
