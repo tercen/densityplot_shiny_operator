@@ -1,7 +1,7 @@
 {
   "name": "Density plot Shiny Operator",
   "description": "Create density plots in Tercen.",
-  "tags": ["plot"],
+  "tags": ["plot", "data visualisation"],
   "authors": ["tercen"],
   "urls": ["https://github.com/tercen/densityplot_shiny_operator"]
 }

@@ -39,25 +39,43 @@ shinyServer(function(input, output, session) {
     
     df <- values$data
     in.col <- values$colors
+    in.lab <- values$labels
     
     input.par <- list(
       log = input$log,
       transparency = input$transparency,
       xlab = input$xlab,
-      ylab = input$ylab
+      ylab = input$ylab,
+      free_y = input$free_y
     )
     
     if(input.par$log) df$.y <- log1p(df$.y)
     
     fill.col <- NULL
     if(length(unique(in.col)) > 1) fill.col <- as.factor(in.col)
+    grp <- NULL
+    if(length(unique(in.lab)) > 1) grp <- as.factor(in.lab)
     
     theme_set(theme_minimal())
     
-    plt <- ggplot(df, aes(.y, fill = fill.col)) + 
-      geom_density(alpha = input.par$transparency) + labs(x = input.par$xlab, y = input.par$ylab, fill = "Legend")
+    groupColors <- NULL
+    if(length(grp) > 1 && length(fill.col) > 1) {
+      cate <- paste0(fill.col, " - ", grp)
+      
+      nb.cols <- length(unique(fill.col))
+      groupColors <- colorRampPalette(brewer.pal(6, "Set2"))(nb.cols)
+      names(groupColors) <- unique(fill.col)
+      colo <- groupColors[fill.col]
+      groupColors <- colo[!duplicated(cate)]
+      names(groupColors) <- unique(cate)
+      fill.col <- cate
+    }
     
-    if(!is.null(df$cnames)) plt <- plt + facet_wrap(~ cnames)
+    plt <- ggplot(df, aes(x = .y, fill = fill.col)) + 
+      geom_density(alpha = input.par$transparency) +
+      labs(x = input.par$xlab, y = input.par$ylab, fill = "Legend")
+    if(!is.null(groupColors)) plt <- plt + scale_fill_manual(values=groupColors)
+    if(!is.null(df$cnames)) plt <- plt + facet_wrap(~ cnames, scales=ifelse(input.par$free_y, "free", "fixed"))
     
     plt
     
@@ -76,6 +94,8 @@ getValues <- function(session){
   
   values$colors <- NA
   if(length(ctx$colors)) values$colors <- ctx$select(ctx$colors[[1]])[[1]]
+  values$labels <- NA
+  if(length(ctx$labels)) values$labels <- ctx$select(ctx$labels[[1]])[[1]]
   
   values$rnames <- ctx$rselect()[[1]]
   names(values$rnames) <- seq_along(values$rnames) - 1

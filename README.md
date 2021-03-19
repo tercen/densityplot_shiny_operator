@@ -10,7 +10,8 @@ Input projection|.
 ---|---
 `y-axis`        | numeric, measurement to represent 
 `column`        | factor (optional), groups corresponding to different plot panels
-`colors`        | factor (optional), groups for corresponding to box and points coloring 
+`colors`        | factor (optional), groups corresponding to area colors 
+`labels`        | factor (optional), groups corresponding to density lines (if colors is provided and different)
 
 Output relations|.
 ---|---
