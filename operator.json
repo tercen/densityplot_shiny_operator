@@ -1,6 +1,6 @@
 {
-  "name": "Density plot Shiny Operator",
-  "description": "Create density plots in Tercen.",
+  "name": "Density Plot",
+  "description": "Displays the distribution of a numeric variable using the probability density function of the variable. It is a smoothed version of the histogram.",
   "tags": ["plot", "data visualisation"],
   "authors": ["tercen"],
   "urls": ["https://github.com/tercen/densityplot_shiny_operator"]
